@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INSG Gabon - Institut National des Sciences de Gestion</title>
+
+    <!-- Google Fonts : Poppins pour les titres, Inter pour le texte -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Configuration Tailwind personnalisée -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            50: '#f0f4f8',
+                            100: '#d9e2ec',
+                            200: '#bcccdc',
+                            300: '#9fb3c8',
+                            400: '#829ab1',
+                            500: '#627d98',
+                            600: '#486581',
+                            700: '#334e68',
+                            800: '#243b53',
+                            900: '#102a43',
+                            950: '#0a1929',
+                        },
+                        gold: {
+                            50: '#fdf8e8',
+                            100: '#faedc4',
+                            200: '#f5dc8a',
+                            300: '#efc94c',
+                            400: '#e8b62a',
+                            500: '#d9a020',
+                            600: '#b87d18',
+                            700: '#935e15',
+                            800: '#794b18',
+                            900: '#663f18',
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Poppins', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px rgba(16, 42, 67, 0.08)',
+                        'soft-lg': '0 10px 40px rgba(16, 42, 67, 0.12)',
+                        'gold': '0 4px 14px rgba(232, 182, 42, 0.35)',
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome via CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* Apparition au scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Cartes articles : pas de bordure, juste une image qui zoome et un titre qui change de couleur */
+        .article-card .article-img {
+            overflow: hidden;
+            border-radius: 0.75rem;
+        }
+        .article-card .article-img img {
+            transition: transform 0.5s ease;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .article-card:hover .article-img img {
+            transform: scale(1.04);
+        }
+        .article-card .article-title {
+            transition: color 0.25s ease;
+        }
+        .article-card:hover .article-title {
+            color: #b87d18;
+        }
+
+        /* Bouton WhatsApp flottant */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 1.75rem;
+            right: 1.75rem;
+            z-index: 50;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background-color: #25D366;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.65rem;
+            box-shadow: 0 4px 18px rgba(37, 211, 102, 0.4);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 24px rgba(37, 211, 102, 0.55);
+        }
+
+        /* Menu mobile */
+        #mobile-menu {
+            transition: max-height 0.35s ease, opacity 0.25s ease;
+            overflow: hidden;
+        }
+
+        /* Scrollbar discrète */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f0f4f8; }
+        ::-webkit-scrollbar-thumb { background: #829ab1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #486581; }
+    </style>
+</head>
+
+<body class="font-body text-navy-800 bg-white antialiased">
+
+    <!-- ============================================= -->
+    <!-- HEADER                                         -->
+    <!-- ============================================= -->
+    <header id="header" class="fixed top-0 left-0 w-full z-40 bg-white/95 backdrop-blur-md transition-shadow duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-2.5 group">
+                    <div class="w-11 h-11 rounded-xl bg-navy-900 flex items-center justify-center shadow-soft group-hover:bg-navy-800 transition-colors">
+                        <span class="font-heading font-extrabold text-gold-400 text-lg">I</span>
+                    </div>
+                    <div class="leading-tight">
+                        <span class="font-heading font-extrabold text-xl text-navy-900 tracking-tight">INSG</span>
+                        <span class="hidden sm:block text-[10px] font-medium text-navy-500 uppercase tracking-widest">Gabon</span>
+                    </div>
+                </a>
+
+                <!-- Nav desktop -->
+                <nav class="hidden lg:flex items-center gap-1">
+                    <a href="#" class="px-4 py-2 text-sm font-medium text-navy-900 hover:text-gold-600 transition-colors">Accueil</a>
+                    <a href="#articles" class="px-4 py-2 text-sm font-medium text-navy-700 hover:text-gold-600 transition-colors">Actualités</a>
+                    <a href="#formations" class="px-4 py-2 text-sm font-medium text-navy-700 hover:text-gold-600 transition-colors">Formations</a>
+                    <a href="#admissions" class="px-4 py-2 text-sm font-medium text-navy-700 hover:text-gold-600 transition-colors">Admissions</a>
+                    <a href="#contact" class="px-4 py-2 text-sm font-medium text-navy-700 hover:text-gold-600 transition-colors">Contact</a>
+                </nav>
+
+                <!-- CTA desktop -->
+                <div class="hidden lg:flex items-center">
+                    <a href="#admissions" class="inline-flex items-center gap-2 px-6 py-2.5 bg-gold-400 hover:bg-gold-300 text-navy-900 font-heading font-semibold text-sm rounded-xl shadow-gold transition-all duration-300 hover:-translate-y-0.5">
+                        <i class="fa-solid fa-graduation-cap text-xs"></i>
+                        Candidater 2026-2027
+                    </a>
+                </div>
+
+                <!-- Hamburger -->
+                <button id="menu-toggle" class="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-lg hover:bg-navy-50 transition-colors" aria-label="Ouvrir le menu" aria-expanded="false">
+                    <span class="menu-line block w-6 h-0.5 bg-navy-800 rounded-full transition-all duration-300"></span>
+                    <span class="menu-line block w-6 h-0.5 bg-navy-800 rounded-full transition-all duration-300"></span>
+                    <span class="menu-line block w-6 h-0.5 bg-navy-800 rounded-full transition-all duration-300"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menu mobile -->
+        <div id="mobile-menu" class="lg:hidden max-h-0 opacity-0 bg-white border-t border-navy-100">
+            <nav class="flex flex-col px-4 py-4 gap-1">
+                <a href="#" class="mobile-link px-4 py-3 text-sm font-medium text-navy-900 hover:bg-navy-50 rounded-lg transition-colors">Accueil</a>
+                <a href="#articles" class="mobile-link px-4 py-3 text-sm font-medium text-navy-700 hover:bg-navy-50 rounded-lg transition-colors">Actualités</a>
+                <a href="#formations" class="mobile-link px-4 py-3 text-sm font-medium text-navy-700 hover:bg-navy-50 rounded-lg transition-colors">Formations</a>
+                <a href="#admissions" class="mobile-link px-4 py-3 text-sm font-medium text-navy-700 hover:bg-navy-50 rounded-lg transition-colors">Admissions</a>
+                <a href="#contact" class="mobile-link px-4 py-3 text-sm font-medium text-navy-700 hover:bg-navy-50 rounded-lg transition-colors">Contact</a>
+                <a href="#admissions" class="mobile-link mt-2 px-4 py-3 bg-gold-400 hover:bg-gold-300 text-navy-900 font-heading font-semibold text-sm rounded-xl text-center shadow-gold transition-colors">
+                    <i class="fa-solid fa-graduation-cap mr-2 text-xs"></i>Candidater 2026-2027
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ============================================= -->
+    <!-- INTRO                                        -->
+    <!-- ============================================= -->
+    <section class="pt-32 pb-10 sm:pt-36 sm:pb-14">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl">
+                <span class="text-xs font-heading font-semibold text-gold-600 uppercase tracking-widest">L'actualité de l'Institut</span>
+                <h1 class="font-heading font-extrabold text-4xl sm:text-5xl md:text-6xl text-navy-900 leading-tight mt-3 mb-5">
+                    La vie de l'INSG,<br class="hidden sm:block"> racontée au quotidien
+                </h1>
+                <p class="text-navy-600 text-base sm:text-lg font-light leading-relaxed max-w-2xl">
+                    Portraits, événements, projets pédagogiques et partenariats : découvrez ce qui fait l'université avant même d'y poser un pied.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- ARTICLE À LA UNE                              -->
+    <!-- ============================================= -->
+    <section class="pb-14 sm:pb-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <a href="#" class="article-card group grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center reveal">
+                <div class="article-img aspect-[16/10]">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Étudiants diplômés de l'INSG" loading="eager">
+                </div>
+                <div>
+                    <span class="text-xs font-heading font-semibold text-gold-600 uppercase tracking-widest">À la une</span>
+                    <h2 class="article-title font-heading font-bold text-2xl sm:text-3xl md:text-4xl text-navy-900 leading-snug mt-3 mb-4">
+                        Une nouvelle ère pour les sciences de gestion au Gabon
+                    </h2>
+                    <p class="text-navy-600 text-sm sm:text-base leading-relaxed mb-5 font-light">
+                        L'INSG amorce une refonte de ses programmes et de son campus pour former la prochaine génération de décideurs. Retour sur les grandes orientations stratégiques de l'Institut.
+                    </p>
+                    <div class="flex flex-wrap gap-x-4 gap-y-1">
+                        <span class="text-sm font-medium text-navy-500 hover:text-gold-600 transition-colors">#INSG2026</span>
+                        <span class="text-sm font-medium text-navy-500 hover:text-gold-600 transition-colors">#Excellence</span>
+                        <span class="text-sm font-medium text-navy-500 hover:text-gold-600 transition-colors">#Formation</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- GRILLE D'ARTICLES                            -->
+    <!-- ============================================= -->
+    <section id="articles" class="pb-20 sm:pb-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- En-tête -->
+            <div class="flex items-end justify-between mb-10 reveal">
+                <div>
+                    <span class="text-xs font-heading font-semibold text-gold-600 uppercase tracking-widest">À découvrir</span>
+                    <h2 class="font-heading font-bold text-3xl sm:text-4xl text-navy-900 mt-2">Derniers articles</h2>
+                </div>
+                <a href="#" class="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-navy-700 hover:text-gold-600 transition-colors">
+                    Tout voir
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+            </div>
+
+            <!-- Grille -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+
+                <!-- Article 1 -->
+                <a href="#" class="article-card group block reveal">
+                    <div class="article-img aspect-[4/3] mb-4">
+                        <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Campus de l'INSG" loading="lazy">
+                    </div>
+                    <span class="text-xs font-heading font-semibold text-gold-600 uppercase tracking-widest">Campus</span>
+                    <h3 class="article-title font-heading font-bold text-lg sm:text-xl text-navy-900 leading-snug mt-2 mb-3">
+                        Un campus repensé pour l'apprentissage moderne
+                    </h3>
+                    <div class="flex flex-wrap gap-x-4 gap-y-1">
+                        <span class="text-sm font-medium text-navy-500">#Campus</span>
+                        <span class="text-sm font-medium text-navy-500">#Innovation</span>
+                    </div>
+                </a>
+
+                <!-- Article 2 -->
+                <a href="#" class="article-card group block reveal" style="transition-delay: 80ms;">
+                    <div class="article-img aspect-[4/3] mb-4">
+                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Étudiants en groupe de travail" loading="lazy">
+                    </div>
+                    <span class="text-xs font-heading font-semibold text-gold-600 uppercase tracking-widest">Vie étudiante</span>
+                    <h3 class="article-title font-heading font-bold text-lg sm:text-xl text-navy-900 leading-snug mt-2 mb-3">
+                        Ils font vivre l'INSG : portraits d'étudiants engagés
+                    </h3>
+                    <div class="flex flex-wrap gap-x-4 gap-y-1">
+                        <span class="text-sm font-medium text-navy-500">#VieÉtudiante</span>
+                        <span class="text-sm font-medium text-navy-500">#Portraits</span>
+                    </div>
+                </a>
+
+                <!-- Article 3 -->
+                <a href="#" class="article-card group block reveal" style="transition-delay: 160ms;">
+                    <div class="article-img aspect-[4/3] mb-4">
+                        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Réunion professionnelle" loading="lazy">
+                    </div>
+                    <span class="text-xs font-heading font-semibold text-gold-600 uppercase tracking-widest">Partenariats</span>
+                    <h3 class="article-title font-heading font-bold text-lg sm:text-xl text-navy-900 leading-snug mt-2 mb-3">
+                        De nouveaux partenariats internationaux pour l'INSG
+                    </h3>
+                    <div class="flex flex-wrap gap-x-4 gap-y-1">
+                        <span class="text-sm font-medium text-navy-500">#International</span>
+                        <span class="text-sm font-medium text-navy-500">#Entreprises</span>
+                    </div>
+                </a>
+
+                <!-- Article 4 -->
+                <a href="#" class="article-card group block reveal">
+                    <div class="article-img aspect-[4/3] mb-4">
+                        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Salle de classe" loading="lazy">
+                    </div>
+                    <span class="text-xs font-heading font-semibold text-gold-600 uppercase tracking-widest">Formations</span>
+                    <h3 class="article-title font-heading font-bold text-lg sm:text-xl text-navy-900 leading-snug mt-2 mb-3">
+                        Du BTS au Master : un parcours d'excellence continu
+                    </h3>
+                    <div class="flex flex-wrap gap-x-4 gap-y-1">
+                        <span class="text-sm font-medium text-navy-500">#BTS</span>
+                        <span class="text-sm font-medium text-navy-500">#Master</span>
+                        <span class="text-sm font-medium text-navy-500">#Formation</span>
+                    </div>
+                </a>
+
+                <!-- Article 5 -->
+                <a href="#" class="article-card group block reveal" style="transition-delay: 80ms;">
+                    <div class="article-img aspect-[4/3] mb-4">
+                        <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Remise de diplômes" loading="lazy">
+                    </div>
+                    <span class="text-xs font-heading font-semibold text-gold-600 uppercase tracking-widest">Événements</span>
+                    <h3 class="article-title font-heading font-bold text-lg sm:text-xl text-navy-900 leading-snug mt-2 mb-3">
+                        Retour en images sur la cérémonie de remise des diplômes
+                    </h3>
+                    <div class="flex flex-wrap gap-x-4 gap-y-1">
+                        <span class="text-sm font-medium text-navy-500">#Diplômes</span>
+                        <span class="text-sm font-medium text-navy-500">#Cérémonie</span>
+                    </div>
+                </a>
+
+                <!-- Article 6 -->
+                <a href="#" class="article-card group block reveal" style="transition-delay: 160ms;">
+                    <div class="article-img aspect-[4/3] mb-4">
+                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Travail d'équipe" loading="lazy">
+                    </div>
+                    <span class="text-xs font-heading font-semibold text-gold-600 uppercase tracking-widest">Insertion pro</span>
+                    <h3 class="article-title font-heading font-bold text-lg sm:text-xl text-navy-900 leading-snug mt-2 mb-3">
+                        Insertion professionnelle : les diplômés de l'INSG ont la cote
+                    </h3>
+                    <div class="flex flex-wrap gap-x-4 gap-y-1">
+                        <span class="text-sm font-medium text-navy-500">#Emploi</span>
+                        <span class="text-sm font-medium text-navy-500">#Carrière</span>
+                    </div>
+                </a>
+
+                <!-- Article 7 -->
+                <a href="#" class="article-card group block reveal">
+                    <div class="article-img aspect-[4/3] mb-4">
+                        <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Bibliothèque universitaire" loading="lazy">
+                    </div>
+                    <span class="text-xs font-heading font-semibold text-gold-600 uppercase tracking-widest">Ressources</span>
+                    <h3 class="article-title font-heading font-bold text-lg sm:text-xl text-navy-900 leading-snug mt-2 mb-3">
+                        La bibliothèque s'ouvre à la recherche numérique
+                    </h3>
+                    <div class="flex flex-wrap gap-x-4 gap-y-1">
+                        <span class="text-sm font-medium text-navy-500">#Bibliothèque</span>
+                        <span class="text-sm font-medium text-navy-500">#Recherche</span>
+                    </div>
+                </a>
+
+                <!-- Article 8 -->
+                <a href="#" class="article-card group block reveal" style="transition-delay: 80ms;">
+                    <div class="article-img aspect-[4/3] mb-4">
+                        <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cours en amphithéâtre" loading="lazy">
+                    </div>
+                    <span class="text-xs font-heading font-semibold text-gold-600 uppercase tracking-widest">Pédagogie</span>
+                    <h3 class="article-title font-heading font-bold text-lg sm:text-xl text-navy-900 leading-snug mt-2 mb-3">
+                        L'enseignement par projets, une signature de l'INSG
+                    </h3>
+                    <div class="flex flex-wrap gap-x-4 gap-y-1">
+                        <span class="text-sm font-medium text-navy-500">#Pédagogie</span>
+                        <span class="text-sm font-medium text-navy-500">#Projets</span>
+                    </div>
+                </a>
+
+                <!-- Article 9 -->
+                <a href="#" class="article-card group block reveal" style="transition-delay: 160ms;">
+                    <div class="article-img aspect-[4/3] mb-4">
+                        <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Étudiants en discussion" loading="lazy">
+                    </div>
+                    <span class="text-xs font-heading font-semibold text-gold-600 uppercase tracking-widest">Communauté</span>
+                    <h3 class="article-title font-heading font-bold text-lg sm:text-xl text-navy-900 leading-snug mt-2 mb-3">
+                        Les associations étudiantes, moteur de la vie de l'école
+                    </h3>
+                    <div class="flex flex-wrap gap-x-4 gap-y-1">
+                        <span class="text-sm font-medium text-navy-500">#Associations</span>
+                        <span class="text-sm font-medium text-navy-500">#Communauté</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Bouton mobile tout voir -->
+            <div class="mt-12 text-center sm:hidden">
+                <a href="#" class="inline-flex items-center gap-2 px-6 py-3 border border-navy-300 text-navy-700 font-medium text-sm rounded-xl hover:bg-navy-50 transition-colors">
+                    Tout voir
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- BANDEAU FORMATIONS                            -->
+    <!-- ============================================= -->
+    <section id="formations" class="bg-navy-900 py-16 sm:py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                <div class="lg:col-span-2 reveal">
+                    <span class="text-xs font-heading font-semibold text-gold-400 uppercase tracking-widest">Formations</span>
+                    <h2 class="font-heading font-bold text-3xl sm:text-4xl text-white mt-2 mb-4 leading-tight">
+                        Du BTS au Master, un parcours d'excellence
+                    </h2>
+                    <p class="text-navy-100 text-sm sm:text-base font-light leading-relaxed max-w-2xl">
+                        Comptabilité, commerce international, finance, marketing, informatique de gestion : l'INSG propose des formations professionnalisantes reconnues.
+                    </p>
+                </div>
+                <div class="reveal lg:text-right">
+                    <a href="#" class="inline-flex items-center gap-2 px-7 py-3.5 bg-gold-400 hover:bg-gold-300 text-navy-900 font-heading font-semibold text-sm rounded-xl shadow-gold transition-all duration-300 hover:-translate-y-0.5">
+                        Découvrir les programmes
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- CONTACT & ADMISSION                           -->
+    <!-- ============================================= -->
+    <section id="admissions" class="py-16 sm:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14 reveal">
+                <span class="text-xs font-heading font-semibold text-gold-600 uppercase tracking-widest">Contact & Admission</span>
+                <h2 class="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl text-navy-900 mt-2">Besoin d'informations ?</h2>
+                <p class="mt-4 text-navy-600 text-base sm:text-lg max-w-2xl mx-auto font-light">
+                    Notre équipe est à votre disposition pour vous accompagner dans vos démarches.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-14">
+                <div class="reveal text-center">
+                    <div class="w-14 h-14 rounded-xl bg-navy-900 text-gold-400 flex items-center justify-center text-xl mx-auto mb-4">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-lg text-navy-900 mb-2">Téléphone</h3>
+                    <div class="space-y-1 text-navy-600 text-sm sm:text-base">
+                        <a href="tel:+24111732845" class="block hover:text-navy-900 transition-colors">(+241) 11 73 28 45</a>
+                        <a href="tel:+24162731542" class="block hover:text-navy-900 transition-colors">(+241) 62 73 15 42</a>
+                    </div>
+                </div>
+
+                <div class="reveal text-center" style="transition-delay: 80ms;">
+                    <div class="w-14 h-14 rounded-xl bg-gold-400 text-navy-900 flex items-center justify-center text-xl mx-auto mb-4">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-lg text-navy-900 mb-2">Email</h3>
+                    <a href="mailto:contact@insg-gabon.com" class="text-navy-600 text-sm sm:text-base hover:text-navy-900 transition-colors break-all">
+                        contact@insg-gabon.com
+                    </a>
+                </div>
+
+                <div class="reveal text-center" style="transition-delay: 160ms;">
+                    <div class="w-14 h-14 rounded-xl bg-navy-900 text-gold-400 flex items-center justify-center text-xl mx-auto mb-4">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-lg text-navy-900 mb-2">Adresse</h3>
+                    <p class="text-navy-600 text-sm sm:text-base">
+                        Gros-Bouquet, Libreville<br>Gabon
+                    </p>
+                </div>
+            </div>
+
+            <div class="reveal bg-navy-50 rounded-2xl p-8 sm:p-12 text-center">
+                <h3 class="font-heading font-bold text-2xl sm:text-3xl text-navy-900 mb-4">Prêt à rejoindre l'INSG ?</h3>
+                <p class="text-navy-600 text-sm sm:text-base mb-8 max-w-xl mx-auto font-light">
+                    Les inscriptions pour l'année académique 2026-2027 sont ouvertes. Ne manquez pas cette opportunité.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="#" class="w-full sm:w-auto px-8 py-3.5 bg-gold-400 hover:bg-gold-300 text-navy-900 font-heading font-semibold text-sm rounded-xl shadow-gold transition-all duration-300 hover:-translate-y-0.5">
+                        <i class="fa-solid fa-file-signature mr-2 text-xs"></i>Candidater maintenant
+                    </a>
+                    <a href="https://wa.me/24162731542" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-8 py-3.5 border-2 border-navy-300 text-navy-800 font-heading font-semibold text-sm rounded-xl hover:bg-navy-900 hover:text-white transition-all duration-300">
+                        <i class="fa-brands fa-whatsapp mr-2 text-base"></i>Nous contacter
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- FOOTER                                       -->
+    <!-- ============================================= -->
+    <footer id="contact" class="bg-navy-950 text-navy-300 py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-navy-800 flex items-center justify-center">
+                        <span class="font-heading font-extrabold text-gold-400 text-base">I</span>
+                    </div>
+                    <div>
+                        <p class="font-heading font-bold text-white text-sm">INSG Gabon</p>
+                        <p class="text-xs text-navy-400">Institut National des Sciences de Gestion</p>
+                    </div>
+                </div>
+                <p class="text-xs text-navy-400 text-center md:text-right">
+                    &copy; 2026 INSG - Institut National des Sciences de Gestion. Tous droits réservés.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================= -->
+    <!-- BOUTON WHATSAPP                              -->
+    <!-- ============================================= -->
+    <a
+        href="https://wa.me/24162731542?text=Bonjour%2C%20je%20souhaite%20obtenir%20des%20informations%20sur%20l'INSG."
+        target="_blank"
+        rel="noopener noreferrer"
+        class="whatsapp-float"
+        aria-label="Contacter le service client via WhatsApp"
+    >
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- ============================================= -->
+    <!-- JAVASCRIPT                                   -->
+    <!-- ============================================= -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Menu mobile
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuLines = document.querySelectorAll('.menu-line');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+            let menuOpen = false;
+
+            function toggleMenu() {
+                menuOpen = !menuOpen;
+                menuToggle.setAttribute('aria-expanded', menuOpen);
+
+                if (menuOpen) {
+                    mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+                    mobileMenu.style.opacity = '1';
+                    menuLines[0].style.transform = 'translateY(8px) rotate(45deg)';
+                    menuLines[1].style.opacity = '0';
+                    menuLines[2].style.transform = 'translateY(-8px) rotate(-45deg)';
+                } else {
+                    mobileMenu.style.maxHeight = '0';
+                    mobileMenu.style.opacity = '0';
+                    menuLines[0].style.transform = 'none';
+                    menuLines[1].style.opacity = '1';
+                    menuLines[2].style.transform = 'none';
+                }
+            }
+
+            menuToggle.addEventListener('click', toggleMenu);
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (menuOpen) toggleMenu();
+                });
+            });
+
+            // Apparition au scroll
+            const revealElements = document.querySelectorAll('.reveal');
+
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.12,
+                rootMargin: '0px 0px -40px 0px'
+            });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // Ombre du header au scroll
+            const header = document.getElementById('header');
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) {
+                    header.classList.add('shadow-soft');
+                } else {
+                    header.classList.remove('shadow-soft');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
